@@ -11,7 +11,7 @@ try {
     configFiles.forEach((element) => {
         console.log(element);
     });
-    config = require("./config/config.json");
+    config = process.env.CONFIG_PATH ? process.env.CONFIG_PATH : require("./config/config.json");
 } catch (error) {
     console.error(error);
     console.log(`can't load config from folder, using dummy config`);
