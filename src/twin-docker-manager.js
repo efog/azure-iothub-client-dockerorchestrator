@@ -69,7 +69,6 @@ class TwinDockerManager {
                         let foundLocally = false;
                         let isRunningLocally = false;
                         for (let idx = 0; idx < localContainers.length; idx++) {
-                            // isLocally deployed but not running
                             const localContainer = localContainers[idx];
                             const matchesTag = localContainer.tag === desired.tag;
                             const matchesImage = localContainer.image === desired.image;
@@ -123,13 +122,12 @@ class TwinDockerManager {
                                 });
                             })
                             .then((images) => {
-                                // const imagesToRemove = images.map((image) => {
-                                //     const found = this._docker.getImage(image.Id);
-                                //     return found.remove();
-                                //     // return image.remove();
-                                // });
-                                // return Promise.all(imagesToRemove);
-                                return this._docker.pruneImages({"dangling": true});
+                                const imagesToRemove = images.map((image) => {
+                                    const found = this._docker.getImage(image.Id);
+                                    return found.remove();
+                                });
+                                return Promise.all(imagesToRemove);
+                                // return this._docker.pruneImages({"dangling": true});
                             });
                         promises.push(promise);
                     }
