@@ -19,14 +19,13 @@ class AzureIotHubClient {
 
     /**
      * Default constructor
-     * @param {*} connectionString Azure IOT Hub device connection string
      * @param {*} config Azure IOT Hub configuration
      */
-    constructor(connectionString, config) {
+    constructor(config) {
         this._client = null;
         this._config = config;
         info(`running with config ${JSON.stringify(config)}`);
-        this._connectionString = connectionString;
+        this._connectionString = this._config.connectionString;
         this._messageId = 0;
         this._twin = null;
         this._twinDockerManager = null;

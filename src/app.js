@@ -6,18 +6,10 @@ const info = dbg("INFO:athena.pi.iothubclient:App");
 
 let config = null;
 try {
-    const rootFiles = fs.readdirSync("./");
-    rootFiles.forEach((element) => {
-        console.log(element);
-    });
-    const configFiles = fs.readdirSync("./config");
-    configFiles.forEach((element) => {
-        console.log(element);
-    });
     config = process.env.CONFIG_PATH ? require(process.env.CONFIG_PATH) : require("./config/config.json");
 } catch (err) {
     error(err);
-    info(`can't load config from folder, using dummy config`);
+    info(`can't load config, using dummy`);
     config = {
         "interval": 60000,
         "deviceId": "Raspberry Pi Dev Node",
@@ -26,6 +18,6 @@ try {
     };
 }
 
-const client = new AzureIotHubClient(config.connectionString || process.env.AzureIoTHubDeviceConnectionString, config);
+const client = new AzureIotHubClient(config);
 
 client.start();
