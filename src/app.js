@@ -1,5 +1,8 @@
 const AzureIotHubClient = require("./azure-iothubclient");
+const dbg = require("debug");
+const error = dbg("ERROR:athena.pi.iothubclient:App");
 const fs = require("fs");
+const info = dbg("INFO:athena.pi.iothubclient:App");
 
 let config = null;
 try {
@@ -11,10 +14,10 @@ try {
     configFiles.forEach((element) => {
         console.log(element);
     });
-    config = process.env.CONFIG_PATH ? process.env.CONFIG_PATH : require("./config/config.json");
-} catch (error) {
-    console.error(error);
-    console.log(`can't load config from folder, using dummy config`);
+    config = process.env.CONFIG_PATH ? require(process.env.CONFIG_PATH) : require("./config/config.json");
+} catch (err) {
+    error(err);
+    info(`can't load config from folder, using dummy config`);
     config = {
         "interval": 60000,
         "deviceId": "Raspberry Pi Dev Node",
