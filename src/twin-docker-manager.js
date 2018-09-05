@@ -17,8 +17,9 @@ info.log = console.log.bind(console);
  */
 class TwinDockerManager {
 
-    constructor(twin) {
+    constructor(twin, registries) {
         this._twin = twin;
+        this._registries = registries;
         twin.on("properties.desired.containers", (delta) => {
             this.handleDelta(delta);
         });
@@ -177,12 +178,14 @@ class TwinDockerManager {
                 },
                 "NetworkMode": element.networkMode ? element.networkMode : "bridge"
             };
+            const registryName = element.image.split(":")[0].split("/")[0];
+            const registry = this._registries[registryName];
             const auth = {
-                "username": "de1435c4-779b-499b-b7e9-52863eaa7d93",
-                "password": "56kvSdmCe7Dl3yAAy1vqWhsFMdYBuF8Xktwd7eFByFw=",
+                "username": registry.username,
+                "password": registry.password,
                 "auth": "",
-                "email": "your@email.email",
-                "serveraddress": "https://abeonapartners.azurecr.io/v1"
+                "email": registry.email,
+                "serveraddress": registry.serveraddress
             };
             const promise = this._docker.pull(image, {
                 "authconfig": auth

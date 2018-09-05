@@ -63,7 +63,7 @@ class AzureIotHubClient {
                 }
                 twin.desiredPropertiesUpdatesEnabled = true;
                 this._twin = twin;
-                this._twinDockerManager = new TwinDockerManager(this._twin);
+                this._twinDockerManager = new TwinDockerManager(this._twin, this._config.registries ? this._config.registries : {});
             });
         }, 100);
     }

@@ -1,0 +1,1 @@
+# docker run -d --network host -v ~/config:/usr/src/app/config efogcontainers.azurecr.io/athena.pi.iotclient:242

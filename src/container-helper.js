@@ -2,6 +2,10 @@ class ContainerHelper {
     constructor(container) {
         this._source = container;
     }
+    get registry() {
+        const nameParts = this._source.Image.split(":")[0].split("/");
+        return nameParts[0];
+    }
     get name() {        
         const nameParts = this._source.Image.split(":")[0].split("/");
         return nameParts[nameParts.length - 1];
