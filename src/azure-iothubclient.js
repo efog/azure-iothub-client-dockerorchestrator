@@ -6,7 +6,7 @@ const error = dbg("ERROR:athena.pi.iothubclient:AzureIotHubClient");
 const info = dbg("INFO:athena.pi.iothubclient:AzureIotHubClient");
 const fs = require("fs");
 const path = require("path");
-const Protocol = require("azure-iot-device-mqtt").Mqtt;
+const Protocol = require("azure-iot-device-amqp").Amqp;
 
 info.log = console.log.bind(console);
 
