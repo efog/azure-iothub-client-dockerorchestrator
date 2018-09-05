@@ -40,6 +40,7 @@ class AzureIotHubClient {
     clientOpened(err) {
         info(`Client opened`);
         if (err) {
+            error(`[IoT hub Client] ${err.message}\r\n${err.stacktrace}\r\n${JSON.stringify(err)}`);
             error(`[IoT hub Client] Connect error: ${err.message}`);
             return;
         }
@@ -76,6 +77,7 @@ class AzureIotHubClient {
         this._sendingMessage = true;
         response.send(200, "Successully start sending message to cloud", (err) => {
             if (err) {
+                error(`[IoT hub Client] ${err.message}\r\n${err.stacktrace}\r\n${JSON.stringify(err)}`);
                 error(`[IoT hub Client] Failed sending a method response:\n ${err.message}`);
             }
         });
@@ -85,6 +87,7 @@ class AzureIotHubClient {
         this._sendingMessage = false;
         response.send(200, "Successully stop sending message to cloud", function (err) {
             if (err) {
+                error(`[IoT hub Client] ${err.message}\r\n${err.stacktrace}\r\n${JSON.stringify(err)}`);
                 error(`[IoT hub Client] Failed sending a method response:\n ${err.message}`);
             }
         });

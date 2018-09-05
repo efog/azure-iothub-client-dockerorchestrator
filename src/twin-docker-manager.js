@@ -158,10 +158,17 @@ class TwinDockerManager {
             bindKeys.forEach((key) => {
                 binds.push(`${key}:${element.volumes[key]}`);
             });
-
+            
+            const envs = [];
+            const envKeys = element.env ? Object.keys(element.env) : [];
             const portsKeys = element.ports ? Object.keys(element.ports) : [];
             const exposedPorts = {};
             const portBindings = {};
+
+            envKeys.forEach((key) => {
+                envs.push(`${key}=${element.env[key]}`);
+            });
+
             portsKeys.forEach((key) => {
                 exposedPorts[key] = {};
                 portBindings[`${key}/tcp`] = [{
@@ -171,6 +178,7 @@ class TwinDockerManager {
             });
 
             const opts = {
+                "Env": envs,
                 "Image": image,
                 "HostConfig": {
                     "Binds": binds,
@@ -178,6 +186,7 @@ class TwinDockerManager {
                 },
                 "NetworkMode": element.networkMode ? element.networkMode : "bridge"
             };
+            
             const registryName = element.image.split(":")[0].split("/")[0];
             const registry = this._registries[registryName];
             const auth = {
@@ -262,7 +271,7 @@ class TwinDockerManager {
                 return promise;
             })
             .catch((err) => {
-                error(JSON.stringify(err));
+                error(`${err.message}\r\n${err.stacktrace}\r\n${JSON.stringify(err)}`);
             });
     }
 
