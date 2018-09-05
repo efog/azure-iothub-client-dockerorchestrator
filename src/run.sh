@@ -1,1 +1,1 @@
-# docker run -d --network host -v ~/config:/usr/src/app/config efogcontainers.azurecr.io/athena.pi.iotclient:242
+# docker run -d -e DEBUG=INFO:*,ERROR:*,-not_this --network host -v ~/config:/usr/src/app/config efogcontainers.azurecr.io/athena_pi_iotclient:254

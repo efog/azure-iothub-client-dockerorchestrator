@@ -123,12 +123,12 @@ class TwinDockerManager {
                                 });
                             })
                             .then((images) => {
-                                const imagesToRemove = images.map((image) => {
-                                    const found = this._docker.getImage(image.Id);
-                                    return found.remove();
-                                });
-                                return Promise.all(imagesToRemove);
-                                // return this._docker.pruneImages({"dangling": true});
+                                // const imagesToRemove = images.map((image) => {
+                                //     const found = this._docker.getImage(image.Id);
+                                //     return found.remove();
+                                // });
+                                // return Promise.all(imagesToRemove);
+                                return this._docker.pruneImages({"dangling": true});
                             });
                         promises.push(promise);
                     }
