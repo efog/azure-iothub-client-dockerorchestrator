@@ -182,11 +182,11 @@ class TwinDockerManager {
                 "Image": image,
                 "HostConfig": {
                     "Binds": binds,
-                    "PortBindings": portBindings
-                },
-                "NetworkMode": element.networkMode ? element.networkMode : "bridge"
+                    "PortBindings": portBindings,
+                    "NetworkMode": element.networkMode ? element.networkMode : "bridge"
+                }
             };
-            
+
             const registryName = element.image.split(":")[0].split("/")[0];
             const registry = this._registries[registryName];
             const auth = {
