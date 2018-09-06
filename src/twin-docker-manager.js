@@ -111,13 +111,16 @@ class TwinDockerManager {
                 for (let index = 0; index < containers.length; index++) {
                     const element = containers[index];
                     const container = new ContainerHelper(element);
+                    info(`stopping container ${JSON.stringify(container)}`);
                     if (namesToStop[container.name]) {
                         const target = this._docker.getContainer(container.id);
                         const promise = target.stop()
                             .then(() => {
+                                info(`stopped container ${JSON.stringify(target)}`);
                                 return target.remove();
                             })
                             .then(() => {
+                                info(`removed container ${JSON.stringify(target)}`);
                                 return this._docker.listImages({
                                     "dangling": true
                                 });
@@ -128,6 +131,7 @@ class TwinDockerManager {
                                 //     return found.remove();
                                 // });
                                 // return Promise.all(imagesToRemove);
+                                info(`pruning ununsed images`);
                                 return this._docker.pruneImages({"dangling": true});
                             });
                         promises.push(promise);
@@ -187,6 +191,8 @@ class TwinDockerManager {
                 }
             };
 
+            info(`starting container ${JSON.stringify(opts)}`);
+
             const registryName = element.image.split(":")[0].split("/")[0];
             const registry = this._registries[registryName];
             const auth = {
@@ -202,6 +208,7 @@ class TwinDockerManager {
                 .then((stream) => {
                     const pullPromise = new Promise((resolve, reject) => {
                         const onfinished = (evt) => {
+                            info(`pulled image ${image}`);
                             return resolve(this._docker.createContainer(opts));
                         };
                         const onprogress = (evt) => {};
@@ -210,6 +217,7 @@ class TwinDockerManager {
                     return pullPromise;
                 })
                 .then((container) => {
+                    info(`starting container ${JSON.stringify(container)}`);
                     return container.start();
                 });
             promises.push(promise);
@@ -227,7 +235,9 @@ class TwinDockerManager {
     applyContainerChanges(delta) {
         let changes = null;
         return this.getLocalContainerChanges(delta)
-            .then((results) => {
+            .then((results) => {                
+                info(`Received changes [stop] ${JSON.stringify(changes.toStop)}`);
+                info(`Received changes [start] ${JSON.stringify(changes.toStart)}`);
                 changes = results;
                 return this.stopContainers(changes.toStop);
             })
@@ -248,6 +258,7 @@ class TwinDockerManager {
      * @memberof DockerManager
      */
     handleDelta(delta) {
+        info(`Received delta ${JSON.stringify(delta)}`);
         return this.applyContainerChanges(delta)
             .then((containers) => {
                 const rptContainers = {};
