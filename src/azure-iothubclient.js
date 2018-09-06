@@ -57,7 +57,7 @@ class AzureIotHubClient {
             this.clientOnReceiveMessage(message);
         });
         this._twinDockerManager = new TwinDockerManager(this._config.registries ? this._config.registries : {});
-        setInterval(() => {
+        setTimeout(() => {
             this._client.getTwin((getTwinError, twin) => {
                 if (getTwinError) {
                     error("get twin message error");
@@ -66,7 +66,7 @@ class AzureIotHubClient {
                 twin.desiredPropertiesUpdatesEnabled = true;
                 this._twinDockerManager.twin = twin;
             });
-        }, 180000);
+        }, 0);
     }
     clientOnReceiveMessage(msg) {
         const message = msg.getData().toString("utf-8");
