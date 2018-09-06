@@ -17,16 +17,22 @@ info.log = console.log.bind(console);
  */
 class TwinDockerManager {
 
-    constructor(twin, registries) {
-        this._twin = twin;
+    constructor(registries) {
         this._registries = registries;
-        twin.on("properties.desired.containers", (delta) => {
-            this.handleDelta(delta);
-        });
         this._docker = dockerProtocol === "socket" ? new Docker() : new Docker({
             "protocol": dockerProtocol,
             "port": dockerPort,
             "host": dockerHost
+        });
+    }
+
+    set twin(value) {
+        if (!this._twin) {            
+            this._twin.on("properties.desired.containers", null);
+        }
+        this._twin = value;
+        this._twin.on("properties.desired.containers", (delta) => {
+            this.handleDelta(delta);
         });
     }
 

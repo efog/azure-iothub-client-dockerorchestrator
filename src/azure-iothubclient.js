@@ -56,6 +56,7 @@ class AzureIotHubClient {
         this._client.on("message", (message) => {
             this.clientOnReceiveMessage(message);
         });
+        this._twinDockerManager = new TwinDockerManager(this._config.registries ? this._config.registries : {});
         setInterval(() => {
             this._client.getTwin((getTwinError, twin) => {
                 if (getTwinError) {
@@ -63,8 +64,7 @@ class AzureIotHubClient {
                     return;
                 }
                 twin.desiredPropertiesUpdatesEnabled = true;
-                this._twin = twin;
-                this._twinDockerManager = new TwinDockerManager(this._twin, this._config.registries ? this._config.registries : {});
+                this._twinDockerManager.twin = twin;
             });
         }, 180000);
     }
