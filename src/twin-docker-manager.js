@@ -27,7 +27,7 @@ class TwinDockerManager {
     }
 
     set twin(value) {
-        if (!this._twin) {            
+        if (this._twin) {            
             this._twin.on("properties.desired.containers", null);
         }
         this._twin = value;
