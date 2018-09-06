@@ -236,9 +236,9 @@ class TwinDockerManager {
         let changes = null;
         return this.getLocalContainerChanges(delta)
             .then((results) => {                
+                changes = results;
                 info(`Received changes [stop] ${JSON.stringify(changes.toStop)}`);
                 info(`Received changes [start] ${JSON.stringify(changes.toStart)}`);
-                changes = results;
                 return this.stopContainers(changes.toStop);
             })
             .then(() => {
