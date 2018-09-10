@@ -116,16 +116,6 @@ class AzureIotHubClient {
             return;
         }
         this._messageId++;
-        // messageProcessor.getMessage(this._messageId, (content) => {
-        //     const message = new Message(JSON.stringify(content));
-        //     this._client.sendEvent(message, (err) => {
-        //         if (err) {
-        //             error('Failed to send message to Azure IoT Hub');
-        //         } else {
-        //             info('Message sent to Azure IoT Hub');
-        //         }
-        //     });
-        // });
     }
     start() {
         info('Starting...');

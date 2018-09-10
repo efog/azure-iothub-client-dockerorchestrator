@@ -117,8 +117,8 @@ class TwinDockerManager {
                 for (let index = 0; index < containers.length; index++) {
                     const element = containers[index];
                     const container = new ContainerHelper(element);
-                    info(`stopping container ${JSON.stringify(container)}`);
                     if (namesToStop[container.name]) {
+                        info(`stopping container ${JSON.stringify(container)}`);
                         const target = this._docker.getContainer(container.id);
                         const promise = target.stop()
                             .then(() => {
